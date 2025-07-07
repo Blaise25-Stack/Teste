@@ -1,3 +1,11 @@
+
+import React, { useState } from 'react';
+import { Plus, Edit, Trash2, Users, Search } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth'; // ✅ Ajout de ce hook
+import { db } from '@/data/db'; // ou adapte le chemin si nécessaire
+
+
+
 const Classes: React.FC = () => {
   const { user } = useAuth();
   const [classes, setClasses] = useState<Class[]>(db.getClasses());
