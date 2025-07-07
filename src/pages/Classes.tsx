@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../utils/database';
 import { Class, User } from '../types';
@@ -6,13 +6,52 @@ import { Plus, Search, Edit, Trash2, Users } from 'lucide-react';
 
 const Classes: React.FC = () => {
   const { user } = useAuth();
-  const [classes, setClasses] = useState<Class[]>(db.getClasses());
+  const [classes, setClasses] = useState<Class[]>([]);
   const [users, setUsers] = useState<User[]>(db.getUsers());
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingClass, setEditingClass] = useState<Class | null>(null);
 
   const teachers = users.filter(u => u.role === 'teacher');
+
+  useEffect(() => {
+    migrateClasses();
+    setClasses(db.getClasses());
+  }, []);
+
+  const migrateClasses = () => {
+    const existingClasses = db.getClasses();
+    const updatedClasses = existingClasses.map(cls => {
+      let newName = cls.name; // Garder le nom actuel par défaut
+      switch (cls.level) {
+        case 'CM1':
+          newName = '1ère';
+          return { ...cls, level: '1ère', name: newName }; // Mise à jour du niveau et du nom
+        case 'CM2':
+          newName = '2ème';
+          return { ...cls, level: '2ème', name: newName }; // Mise à jour du niveau et du nom
+        case '6ème':
+          newName = '3ème';
+          return { ...cls, level: '3ème', name: newName }; // Exemple de mise à jour pour 6ème
+        case '5ème':
+          newName = '4ème';
+          return { ...cls, level: '4ème', name: newName };
+        case '4ème':
+          newName = '5ème';
+          return { ...cls, level: '5ème', name: newName };
+        case '3ème':
+          newName = '6ème';
+          return { ...cls, level: '6ème', name: newName };
+        default:
+          return cls; // Pas de changement pour les autres niveaux
+      }
+    });
+    
+    // Mettre à jour les classes dans la base de données
+    updatedClasses.forEach(cls => {
+      db.updateClass(cls.id, cls);
+    });
+  };
 
   const filteredClasses = classes.filter(cls =>
     cls.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,7 +186,7 @@ const Classes: React.FC = () => {
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-sm text-gray-600">
                   <Users className="h-4 w-4 mr-2" />
-                  <span>{studentCount} élèveisiss</span>
+                  <span>{studentCount} élèves</span>
                 </div>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Professeur principal :</span> {teacher?.name || 'Non assigné'}
@@ -197,7 +236,7 @@ const Classes: React.FC = () => {
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Ex: CM2 A"
+                  placeholder="Ex: 1ère A"
                 />
               </div>
 
@@ -210,15 +249,12 @@ const Classes: React.FC = () => {
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Sélectionner un niveau</option>
-                  <option value="CP">CP</option>
-                  <option value="CE1">CE1</option>
-                  <option value="CE2">CE2</option>
-                  <option value="CM1">CM1</option>
-                  <option value="CM2">CM2</option>
-                  <option value="6ème">6ème</option>
-                  <option value="5ème">5ème</option>
-                  <option value="4ème">4ème</option>
+                  <option value="1ère">1ère</option>
+                  <option value="2ème">2ème</option>
                   <option value="3ème">3ème</option>
+                  <option value="4ème">4ème</option>
+                  <option value="5ème">5ème</option>
+                  <option value="6ème">6ème</option>
                 </select>
               </div>
 
