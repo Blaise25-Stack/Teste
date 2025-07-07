@@ -1,11 +1,3 @@
-
-import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Users, Search } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth'; // ✅ Ajout de ce hook
-import { db } from '@/data/db'; // ou adapte le chemin si nécessaire
-
-
-
 const Classes: React.FC = () => {
   const { user } = useAuth();
   const [classes, setClasses] = useState<Class[]>(db.getClasses());
@@ -205,31 +197,23 @@ const Classes: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">Niveau</label>
-               <select
-  required
-  value={formData.level}
-  onChange={(e) => setFormData({...formData, level: e.target.value})}
-  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
->
-  <option value="">Sélectionner un niveau</option>
-  <optgroup label="École primaire">
-    <option value="1ère année primaire">1ère année primaire</option>
-    <option value="2ème année primaire">2ème année primaire</option>
-    <option value="3ème année primaire">3ème année primaire</option>
-    <option value="4ème année primaire">4ème année primaire</option>
-    <option value="5ème année primaire">5ème année primaire</option>
-    <option value="6ème année primaire">6ème année primaire</option>
-  </optgroup>
-  <optgroup label="École secondaire">
-    <option value="1ère secondaire">1ère secondaire</option>
-    <option value="2ème secondaire">2ème secondaire</option>
-    <option value="3ème secondaire">3ème secondaire</option>
-    <option value="4ème secondaire">4ème secondaire</option>
-    <option value="5ème secondaire">5ème secondaire</option>
-    <option value="6ème secondaire">6ème secondaire</option>
-  </optgroup>
-</select>
-
+                <select
+                  required
+                  value={formData.level}
+                  onChange={(e) => setFormData({...formData, level: e.target.value})}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Sélectionner un niveau</option>
+                  <option value="CP">CP</option>
+                  <option value="CE1">CE1</option>
+                  <option value="CE2">CE2</option>
+                  <option value="CM1">CM1</option>
+                  <option value="CM2">CM2</option>
+                  <option value="6ème">6ème</option>
+                  <option value="5ème">5ème</option>
+                  <option value="4ème">4ème</option>
+                  <option value="3ème">3ème</option>
+                </select>
               </div>
 
               <div>
