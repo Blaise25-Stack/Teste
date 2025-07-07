@@ -147,7 +147,7 @@ const Classes: React.FC = () => {
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-sm text-gray-600">
                   <Users className="h-4 w-4 mr-2" />
-                  <span>{studentCount} élèves</span>
+                  <span>{studentCount} élèveisiss</span>
                 </div>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Professeur principal :</span> {teacher?.name || 'Non assigné'}
