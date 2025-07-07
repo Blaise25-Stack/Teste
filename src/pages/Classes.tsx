@@ -1,9 +1,11 @@
+import { useAuth } from '@/hooks/useAuth';
 const Classes: React.FC = () => {
   const { user } = useAuth();
   const [classes, setClasses] = useState<Class[]>(db.getClasses());
   const [users, setUsers] = useState<User[]>(db.getUsers());
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
+  import { useAuth } from '@/hooks/useAuth';
   const [editingClass, setEditingClass] = useState<Class | null>(null);
 
   const teachers = users.filter(u => u.role === 'teacher');
