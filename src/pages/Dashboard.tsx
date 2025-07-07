@@ -285,7 +285,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     </div>
                     <div className="text-right ml-2 flex-shrink-0">
-                      <p className="font-bold text-green-600 text-sm sm:text-base">{payment.amount.toLocaleString()} FCFA</p>
+                      <p className="font-bold text-green-600 text-sm sm:text-base">{payment.amount.toLocaleString()} FC</p>
                       <p className="text-xs text-gray-500">{new Date(payment.date).toLocaleDateString()}</p>
                     </div>
                   </div>
