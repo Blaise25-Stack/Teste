@@ -206,122 +206,124 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-gray-600 bg-opacity-50" onClick={toggleMobileMenu}>
-          <div className="fixed inset-y-0 left-0 w-80 bg-white shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200">
-              <div className="flex items-center">
-                <School className="h-8 w-8 text-blue-600" />
-                <span className="ml-2 text-xl font-bold text-gray-900">École Numérique</span>
-              </div>
-              <button
-                onClick={toggleMobileMenu}
-                className="p-2 rounded-md text-gray-600 hover:text-gray-900"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            
-            <nav className="mt-4 px-4 h-[calc(100vh-4rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+     {isMobileMenuOpen && (
+  <div className="lg:hidden fixed inset-0 z-50 bg-gray-600 bg-opacity-50" onClick={toggleMobileMenu}>
+    <div className="fixed inset-y-0 left-0 w-80 bg-white shadow-xl flex flex-col" onClick={(e) => e.stopPropagation()}>
+      
+      {/* Header */}
+      <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 flex-shrink-0">
+        <div className="flex items-center">
+          <School className="h-8 w-8 text-blue-600" />
+          <span className="ml-2 text-xl font-bold text-gray-900">École Numérique</span>
+        </div>
+        <button
+          onClick={toggleMobileMenu}
+          className="p-2 rounded-md text-gray-600 hover:text-gray-900"
+        >
+          <X className="h-6 w-6" />
+        </button>
+      </div>
 
-              <ul className="space-y-2">
-                {filteredNavigation.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = location.pathname === item.href;
-                  const readOnly = isReadOnlyAccess(item.href);
-                  
-                  return (
-                    <li key={item.name}>
-                      <Link
-                        to={item.href}
-                        onClick={toggleMobileMenu}
-                        className={`flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors ${
-                          isActive
-                            ? 'bg-blue-100 text-blue-700'
-                            : readOnly
-                            ? 'text-gray-400 hover:bg-gray-50'
-                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                        }`}
-                      >
-                        <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                        <span className="flex-1 truncate">{item.name}</span>
-                        {item.badge && (
-                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full ml-2">
-                            {item.badge}
-                          </span>
-                        )}
-                        {readOnly && (
-                          <EyeOff className="h-4 w-4 text-gray-400 ml-2" title="Accès limité" />
-                        )}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+      {/* Scrollable menu */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+        <ul className="space-y-2">
+          {filteredNavigation.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.href;
+            const readOnly = isReadOnlyAccess(item.href);
 
-              {/* Parent Account Info - Mobile */}
-              {user?.role === 'parent' && (!user.childrenIds || user.childrenIds.length === 0) && (
-                <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
-                  <div className="flex items-center mb-2">
-                    <Eye className="h-4 w-4 text-yellow-600 mr-2" />
-                    <span className="text-sm font-medium text-yellow-800">Accès en consultation</span>
-                  </div>
-                  <p className="text-xs text-yellow-700 mb-3">
-                    Inscrivez vos enfants pour accéder à leurs notes, présences et devoirs.
-                  </p>
-                  <Link
-                    to="/register"
-                    onClick={toggleMobileMenu}
-                    className="inline-flex items-center px-3 py-1 bg-yellow-600 text-white text-xs rounded-md hover:bg-yellow-700"
-                  >
-                    Inscrire un enfant
-                  </Link>
-                </div>
-              )}
-
-              {/* User Profile - Mobile */}
-              <div className="mt-6 p-4 border-t border-gray-200">
-                <div className="flex items-center mb-4">
-                  {user?.profilePhoto ? (
-                    <img 
-                      src={user.profilePhoto} 
-                      alt={user.name}
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
-                      <User className="h-5 w-5 text-gray-400" />
-                    </div>
-                  )}
-                  <div className="ml-3 flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-                    <p className="text-xs text-gray-500 capitalize">
-                      {user?.role === 'admin' ? 'Administrateur' : 
-                       user?.role === 'teacher' ? 'Professeur' : 'Parent'}
-                    </p>
-                    {user?.role === 'parent' && user.childrenIds && user.childrenIds.length > 0 && (
-                      <p className="text-xs text-green-600">
-                        {user.childrenIds.length} enfant(s) inscrit(s)
-                      </p>
-                    )}
-                  </div>
-                </div>
-                
-                <button
-                  onClick={() => {
-                    logout();
-                    toggleMobileMenu();
-                  }}
-                  className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+            return (
+              <li key={item.name}>
+                <Link
+                  to={item.href}
+                  onClick={toggleMobileMenu}
+                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors ${
+                    isActive
+                      ? 'bg-blue-100 text-blue-700'
+                      : readOnly
+                      ? 'text-gray-400 hover:bg-gray-50'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Déconnexion
-                </button>
-              </div>
-            </nav>
+                  <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
+                  <span className="flex-1 truncate">{item.name}</span>
+                  {item.badge && (
+                    <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full ml-2">
+                      {item.badge}
+                    </span>
+                  )}
+                  {readOnly && (
+                    <EyeOff className="h-4 w-4 text-gray-400 ml-2" title="Accès limité" />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Parent Account Info - Mobile */}
+        {user?.role === 'parent' && (!user.childrenIds || user.childrenIds.length === 0) && (
+          <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
+            <div className="flex items-center mb-2">
+              <Eye className="h-4 w-4 text-yellow-600 mr-2" />
+              <span className="text-sm font-medium text-yellow-800">Accès en consultation</span>
+            </div>
+            <p className="text-xs text-yellow-700 mb-3">
+              Inscrivez vos enfants pour accéder à leurs notes, présences et devoirs.
+            </p>
+            <Link
+              to="/register"
+              onClick={toggleMobileMenu}
+              className="inline-flex items-center px-3 py-1 bg-yellow-600 text-white text-xs rounded-md hover:bg-yellow-700"
+            >
+              Inscrire un enfant
+            </Link>
+          </div>
+        )}
+      </div>
+
+      {/* Footer - Profil + Déconnexion */}
+      <div className="p-4 border-t border-gray-200 flex-shrink-0">
+        <div className="flex items-center mb-4">
+          {user?.profilePhoto ? (
+            <img 
+              src={user.profilePhoto} 
+              alt={user.name}
+              className="h-10 w-10 rounded-full object-cover"
+            />
+          ) : (
+            <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
+              <User className="h-5 w-5 text-gray-400" />
+            </div>
+          )}
+          <div className="ml-3 flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
+            <p className="text-xs text-gray-500 capitalize">
+              {user?.role === 'admin' ? 'Administrateur' :
+               user?.role === 'teacher' ? 'Professeur' : 'Parent'}
+            </p>
+            {user?.role === 'parent' && user.childrenIds && user.childrenIds.length > 0 && (
+              <p className="text-xs text-green-600">
+                {user.childrenIds.length} enfant(s) inscrit(s)
+              </p>
+            )}
           </div>
         </div>
-      )}
+
+        <button
+          onClick={() => {
+            logout();
+            toggleMobileMenu();
+          }}
+          className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Déconnexion
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block lg:w-64 lg:bg-white lg:shadow-lg lg:overflow-y-auto">
