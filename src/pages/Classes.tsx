@@ -24,10 +24,10 @@ const Classes: React.FC = () => {
     const updatedClasses = existingClasses.map(cls => {
       let newName = cls.name; // Garder le nom actuel par défaut
       switch (cls.level) {
-        case 'CM2':
+        case 'CM1':
           newName = '1ère';
           return { ...cls, level: '1ère', name: newName }; // Mise à jour du niveau et du nom
-        case 'CM1':
+        case 'CM2':
           newName = '2ème';
           return { ...cls, level: '2ème', name: newName }; // Mise à jour du niveau et du nom
         case '6ème':
