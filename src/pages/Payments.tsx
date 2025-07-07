@@ -217,7 +217,7 @@ const Payments: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                      {payment.amount.toLocaleString()} FCFA
+                      {payment.amount.toLocaleString()} FC
                     </div>
                     <div className="text-sm text-gray-500 capitalize">{payment.method}</div>
                   </td>
@@ -286,7 +286,7 @@ const Payments: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Montant (FCFA)</label>
+                <label className="block text-sm font-medium text-gray-700">Montant (FC)</label>
                 <input
                   type="number"
                   required
