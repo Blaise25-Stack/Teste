@@ -400,14 +400,7 @@ const Login: React.FC = () => {
           </Link>
         </div>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-md">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Comptes de démonstration :</h3>
-          <div className="text-xs text-gray-600 space-y-1">
-            <p><strong>Admin :</strong> admin / admin123</p>
-            <p><strong>Professeur :</strong> prof1 / prof123</p>
-            <p><strong>Parent :</strong> parent1 / parent123</p>
-          </div>
-        </div>
+       
       </div>
     </div>
   );
