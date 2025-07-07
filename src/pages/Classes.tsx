@@ -1,9 +1,3 @@
-import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../utils/database';
-import { Class, User } from '../types';
-import { Plus, Search, Edit, Trash2, Users } from 'lucide-react';
-
 const Classes: React.FC = () => {
   const { user } = useAuth();
   const [classes, setClasses] = useState<Class[]>(db.getClasses());
@@ -29,7 +23,7 @@ const Classes: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (editingClass) {
       db.updateClass(editingClass.id, formData);
       setClasses(db.getClasses());
@@ -41,7 +35,7 @@ const Classes: React.FC = () => {
       db.addClass(newClass);
       setClasses(db.getClasses());
     }
-    
+
     resetForm();
   };
 
@@ -120,7 +114,7 @@ const Classes: React.FC = () => {
         {filteredClasses.map((cls) => {
           const teacher = teachers.find(t => t.id === cls.teacherId);
           const studentCount = getStudentCount(cls.id);
-          
+
           return (
             <div key={cls.id} className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-4">
@@ -143,7 +137,7 @@ const Classes: React.FC = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-sm text-gray-600">
                   <Users className="h-4 w-4 mr-2" />
@@ -187,7 +181,7 @@ const Classes: React.FC = () => {
             <h3 className="text-lg font-bold text-gray-900 mb-4">
               {editingClass ? 'Modifier la classe' : 'Ajouter une classe'}
             </h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Nom de la classe</label>
@@ -197,7 +191,7 @@ const Classes: React.FC = () => {
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Ex: CM2 A"
+                  placeholder="Ex: 3ème secondaire A"
                 />
               </div>
 
@@ -210,15 +204,22 @@ const Classes: React.FC = () => {
                   className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Sélectionner un niveau</option>
-                  <option value="CP">CP</option>
-                  <option value="CE1">CE1</option>
-                  <option value="CE2">CE2</option>
-                  <option value="CM1">CM1</option>
-                  <option value="CM2">CM2</option>
-                  <option value="6ème">6ème</option>
-                  <option value="5ème">5ème</option>
-                  <option value="4ème">4ème</option>
-                  <option value="3ème">3ème</option>
+                  <optgroup label="École primaire">
+                    <option value="1ère primaire">1ère primaire</option>
+                    <option value="2ème primaire">2ème primaire</option>
+                    <option value="3ème primaire">3ème primaire</option>
+                    <option value="4ème primaire">4ème primaire</option>
+                    <option value="5ème primaire">5ème primaire</option>
+                    <option value="6ème primaire">6ème primaire</option>
+                  </optgroup>
+                  <optgroup label="École secondaire">
+                    <option value="1ère secondaire">1ère secondaire</option>
+                    <option value="2ème secondaire">2ème secondaire</option>
+                    <option value="3ème secondaire">3ème secondaire</option>
+                    <option value="4ème secondaire">4ème secondaire</option>
+                    <option value="5ème secondaire">5ème secondaire</option>
+                    <option value="6ème secondaire">6ème secondaire</option>
+                  </optgroup>
                 </select>
               </div>
 
